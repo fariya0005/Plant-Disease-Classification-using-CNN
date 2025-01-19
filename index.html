@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Plant Disease Classification</title>
+  <style>
+    /* General Reset */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Roboto', sans-serif;
+    }
+
+    body {
+      background-color: #f3f4f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      color: #333;
+    }
+
+    .container {
+      background: #fff;
+      border-radius: 10px;
+      padding: 2rem;
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
+      max-width: 500px;
+      width: 90%;
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 2rem;
+      color: #4A5568;
+      margin-bottom: 1rem;
+    }
+
+    p {
+      font-size: 1rem;
+      color: #718096;
+    }
+
+    form {
+      margin: 1.5rem 0;
+    }
+
+    input[type="file"] {
+      display: none;
+    }
+
+    label {
+      display: inline-block;
+      background: #1A202C;
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+
+    label:hover {
+      background: #2D3748;
+    }
+
+    button {
+      background: #3182ce;
+      color: #fff;
+      padding: 0.8rem 1.5rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+    }
+
+    button:hover {
+      background: #2b6cb0;
+    }
+
+    .message {
+      margin: 1rem 0;
+      font-size: 1.1rem;
+      color: #e53e3e;
+    }
+
+    .result {
+      margin-top: 2rem;
+      text-align: left;
+    }
+
+    .result p {
+      font-size: 1.1rem;
+      color: #4A5568;
+      margin-bottom: 0.5rem;
+    }
+
+    .confidence {
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #2D3748;
+    }
+
+    .result img {
+      display: block;
+      max-width: 100%;
+      margin-top: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .file-name {
+      margin-top: 1rem;
+      font-size: 1rem;
+      color: #4A5568;
+    }
+
+    @media (max-width: 768px) {
+      h1 {
+        font-size: 1.8rem;
+      }
+
+      .container {
+        padding: 1.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Plant Disease Classification</h1>
+    <p>Upload an image of a potato plant to detect its condition.</p>
+    <form method="POST" enctype="multipart/form-data">
+      {% if message %}
+      <div class="message">{{ message }}</div>
+      {% endif %}
+      <label for="file-upload">Choose an Image</label>
+      <input id="file-upload" type="file" name="file" onchange="displayFileName()">
+      <button type="submit">Classify</button>
+    </form>
+
+    <div id="file-name" class="file-name"></div>
+
+    {% if image_path %}
+    <div class="result">
+      <p><strong>Actual Label:</strong> {{ actual_label }}</p>
+      <p><strong>Predicted Label:</strong> {{ predicted_label }}</p>
+      <p class="confidence"><strong>Confidence:</strong> {{ confidence }}%</p>
+      <img src="{{ image_path }}" alt="Uploaded Image">
+    </div>
+    {% endif %}
+  </div>
+
+  <script>
+    function displayFileName() {
+      const fileInput = document.getElementById('file-upload');
+      const fileName = fileInput.files[0]?.name;
+      const fileNameDiv = document.getElementById('file-name');
+
+      if (fileName) {
+        fileNameDiv.textContent = `File Selected: ${fileName}`;
+      } else {
+        fileNameDiv.textContent = '';
+      }
+    }
+  </script>
+</body>
+</html>
+
